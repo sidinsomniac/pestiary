@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import SwRegistrar from "@/components/shell/SwRegistrar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,6 +19,13 @@ export const metadata: Metadata = {
   title: "Pestiary — AI Pest Identification",
   description:
     "Pestiary identifies household pests from a plain-language description, explains the evidence, recommends a treatment with an estimated quote, and drafts a ready-to-send bilingual reply.",
+  manifest: "/manifest.webmanifest",
+  themeColor: "#1f9d57",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Pestiary",
+  },
   openGraph: {
     title: "Pestiary",
     description:
@@ -33,7 +41,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <SwRegistrar />
+      </body>
     </html>
   );
 }

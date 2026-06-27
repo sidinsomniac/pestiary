@@ -1,0 +1,86 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="35%" cy="22%" r="95%">
+      <stop offset="0%" stop-color="#2bbf6a"/>
+      <stop offset="45%" stop-color="#159a52"/>
+      <stop offset="100%" stop-color="#0c6536"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3d27a"/>
+      <stop offset="38%" stop-color="#d9a93f"/>
+      <stop offset="70%" stop-color="#b9842a"/>
+      <stop offset="100%" stop-color="#e7c061"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="36%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#eafff2" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#cdeede" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0d7a45" stop-opacity="0.22"/>
+    </radialGradient>
+    <radialGradient id="shell" cx="38%" cy="30%" r="85%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#e4f1e9"/>
+      <stop offset="100%" stop-color="#b9d3c4"/>
+    </radialGradient>
+    <linearGradient id="glint" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="512" height="512" rx="0" fill="url(#bg)"/>
+  <ellipse cx="200" cy="70" rx="300" ry="140" fill="#ffffff" opacity="0.07"/>
+
+  <!-- soft shadow under lens -->
+  <ellipse cx="256" cy="290" rx="186" ry="186" fill="#063c20" opacity="0.28"/>
+
+  <!-- gold bezel ring -->
+  <circle cx="256" cy="256" r="188" fill="url(#gold)"/>
+  <circle cx="256" cy="256" r="170" fill="#0c6536"/>
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#fff3cf" stroke-width="3" opacity="0.5"/>
+
+  <!-- frosted lens -->
+  <circle cx="256" cy="256" r="170" fill="url(#lens)"/>
+
+  <!-- beetle drop shadow -->
+  <g opacity="0.25" transform="translate(6,10)">
+    <ellipse cx="256" cy="300" rx="78" ry="106" fill="#063c20"/>
+    <circle cx="256" cy="178" r="40" fill="#063c20"/>
+  </g>
+
+  <!-- legs -->
+  <g stroke="#cfe6d9" stroke-width="11" stroke-linecap="round" fill="none">
+    <path d="M188 232 C150 214 132 206 116 196"/>
+    <path d="M184 288 C140 286 120 286 104 288"/>
+    <path d="M188 340 C150 360 132 372 118 384"/>
+    <path d="M324 232 C374 214 392 206 408 196"/>
+    <path d="M328 288 C372 286 392 286 408 288"/>
+    <path d="M324 340 C374 360 392 372 406 384"/>
+  </g>
+
+  <!-- antennae -->
+  <g stroke="#cfe6d9" stroke-width="11" stroke-linecap="round" fill="none">
+    <path d="M236 146 C212 116 196 102 182 92"/>
+    <path d="M276 146 C300 116 316 102 330 92"/>
+  </g>
+  <circle cx="180" cy="90" r="11" fill="#d9a93f"/>
+  <circle cx="332" cy="90" r="11" fill="#d9a93f"/>
+
+  <!-- head -->
+  <circle cx="256" cy="176" r="42" fill="url(#shell)"/>
+  <!-- pronotum -->
+  <ellipse cx="256" cy="214" rx="58" ry="34" fill="url(#shell)"/>
+  <!-- elytra / abdomen -->
+  <ellipse cx="256" cy="300" rx="78" ry="106" fill="url(#shell)"/>
+
+  <!-- elytra seam + suture lines -->
+  <line x1="256" y1="206" x2="256" y2="396" stroke="#c89433" stroke-width="5" opacity="0.55"/>
+  <path d="M256 250 C230 280 224 330 238 372" stroke="#c89433" stroke-width="3" opacity="0.32" fill="none"/>
+  <path d="M256 250 C282 280 288 330 274 372" stroke="#c89433" stroke-width="3" opacity="0.32" fill="none"/>
+
+  <!-- carapace highlight -->
+  <ellipse cx="232" cy="262" rx="30" ry="46" fill="url(#glint)" opacity="0.7"/>
+
+  <!-- lens glass glint sweep -->
+  <path d="M120 150 A170 170 0 0 1 360 110 L330 150 A130 130 0 0 0 150 178 Z" fill="url(#glint)" opacity="0.5"/>
+</svg>
