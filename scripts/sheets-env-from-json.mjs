@@ -30,8 +30,16 @@ if (!data.client_email || !data.private_key) {
 
 // Escape real newlines to literal \n so the value fits on one line in .env.local.
 const escapedKey = data.private_key.replace(/\n/g, "\\n");
+// Base64 of the full PEM — the bulletproof form for Vercel (no newlines/quotes
+// to mangle). The app reads GOOGLE_PRIVATE_KEY_BASE64 if present.
+const base64Key = Buffer.from(data.private_key, "utf-8").toString("base64");
 
-console.log("\n# --- paste these two lines into .env.local ---\n");
+console.log("\n# --- LOCAL: paste these into .env.local ---\n");
 console.log(`GOOGLE_SERVICE_ACCOUNT_EMAIL=${data.client_email}`);
 console.log(`GOOGLE_PRIVATE_KEY="${escapedKey}"`);
+
+console.log("\n# --- VERCEL: add these env vars (NO surrounding quotes) ---\n");
+console.log(`GOOGLE_SERVICE_ACCOUNT_EMAIL=${data.client_email}`);
+console.log(`GOOGLE_PRIVATE_KEY_BASE64=${base64Key}`);
+
 console.log("\n# GOOGLE_SHEETS_ID is the part of your Sheet URL between /d/ and /edit");

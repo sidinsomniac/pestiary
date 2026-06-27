@@ -40,6 +40,7 @@ export async function GET(): Promise<NextResponse> {
           hasDeepSeekKey: !!process.env.DEEPSEEK_API_KEY,
           hasServiceEmail: !!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
           hasPrivateKey: !!rawKey,
+          hasPrivateKeyBase64: !!process.env.GOOGLE_PRIVATE_KEY_BASE64,
           hasSheetId: !!process.env.GOOGLE_SHEETS_ID,
           privateKeyLength: rawKey.length,
           privateKeyHasBeginMarker: rawKey.includes("BEGIN PRIVATE KEY"),

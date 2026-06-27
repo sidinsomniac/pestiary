@@ -1,11 +1,39 @@
 import { google } from "googleapis";
 import type { CustomerInquiry } from "@/types";
 
+// Resolves the service-account private key robustly across hosting platforms.
+// Vercel's env UI mangles PEM keys in several ways; this handles all of them:
+//   1. GOOGLE_PRIVATE_KEY_BASE64 — base64 of the whole PEM (immune to newline
+//      mangling; the recommended form for Vercel). Decoded here.
+//   2. GOOGLE_PRIVATE_KEY — raw PEM. We strip accidental surrounding quotes and
+//      convert literal \n / \r\n escapes back into real newlines.
+function resolvePrivateKey(): string | undefined {
+  const b64 = process.env.GOOGLE_PRIVATE_KEY_BASE64;
+  if (b64 && b64.trim()) {
+    return Buffer.from(b64.trim(), "base64").toString("utf-8").trim();
+  }
+
+  let key = process.env.GOOGLE_PRIVATE_KEY;
+  if (!key) return undefined;
+  key = key.trim();
+
+  // Strip surrounding quotes if the value was pasted with them.
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1);
+  }
+
+  // Convert escaped newlines (\r\n then \n) into real newlines.
+  return key.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+}
+
 function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      private_key: resolvePrivateKey(),
     },
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
