@@ -26,7 +26,8 @@ export default function TopBar({ onMenu, onBack, subtitle }: TopBarProps) {
       )}
 
       <div className={styles.brand}>
-        <span className={styles.mark} aria-hidden="true">🐞</span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.mark} src="/icons/icon.svg" alt="" aria-hidden="true" width={28} height={28} />
         <span className={styles.word}>Pestiary</span>
       </div>
 

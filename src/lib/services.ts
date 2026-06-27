@@ -148,6 +148,76 @@ export const PEST_SERVICES: PestServiceMapping[] = [
     price_per_sqft: 0, // pricing is per-visit, not by area
     base_price: 2500,
   },
+  {
+    pest_keywords: ["silverfish"],
+    service: {
+      service_name: "Silverfish Control Service",
+      service_description:
+        "Residual treatment of bookshelves, wardrobes, and damp corners. Targets the moisture-loving harborage silverfish depend on.",
+      estimated_price_min: 900,
+      estimated_price_max: 3000,
+      estimated_visits: 1,
+      warranty_months: 3,
+    },
+    price_per_sqft: 0.09,
+    base_price: 900,
+  },
+  {
+    pest_keywords: ["flea", "fleas"],
+    service: {
+      service_name: "Flea Control Service",
+      service_description:
+        "Insecticidal treatment of flooring, pet bedding, and cracks. Includes a follow-up to break the egg-to-adult cycle.",
+      estimated_price_min: 1200,
+      estimated_price_max: 4500,
+      estimated_visits: 2,
+      warranty_months: 3,
+    },
+    price_per_sqft: 0.12,
+    base_price: 1200,
+  },
+  {
+    pest_keywords: ["honey bee", "bee", "wasp", "hornet"],
+    service: {
+      service_name: "Bee & Wasp Removal",
+      service_description:
+        "Safe removal and relocation of nests and hives by trained technicians with protective equipment. Ethical handling of pollinators.",
+      estimated_price_min: 1800,
+      estimated_price_max: 7000,
+      estimated_visits: 1,
+      warranty_months: 3,
+    },
+    price_per_sqft: 0, // priced per nest, not by area
+    base_price: 1800,
+  },
+  {
+    pest_keywords: ["gecko", "lizard"],
+    service: {
+      service_name: "Lizard Control Service",
+      service_description:
+        "Repellent application around entry points, lights, and ceilings, plus exclusion advice to reduce the insect prey that draws lizards in.",
+      estimated_price_min: 1000,
+      estimated_price_max: 3500,
+      estimated_visits: 1,
+      warranty_months: 3,
+    },
+    price_per_sqft: 0.1,
+    base_price: 1000,
+  },
+  {
+    pest_keywords: ["weevil", "grain beetle", "stored product", "pantry"],
+    service: {
+      service_name: "Stored-Product Pest Control",
+      service_description:
+        "Treatment of pantry, grain, and storage areas for weevils and grain beetles. Includes guidance on sealing and sanitation of affected stock.",
+      estimated_price_min: 1000,
+      estimated_price_max: 4000,
+      estimated_visits: 1,
+      warranty_months: 3,
+    },
+    price_per_sqft: 0.1,
+    base_price: 1000,
+  },
 ];
 
 // The candidate list the LLM should evaluate against. Must align with pest_keywords above.
@@ -159,9 +229,17 @@ export const CANDIDATE_PESTS = [
   { id: "house_rat", pest_name: "House Rat", scientific_name: "Rattus rattus" },
   { id: "bed_bug", pest_name: "Bed Bug", scientific_name: "Cimex lectularius" },
   { id: "mosquito", pest_name: "Mosquito", scientific_name: "Culex / Aedes spp." },
-  { id: "common_ant", pest_name: "Common Ant", scientific_name: "Camponotus / Solenopsis spp." },
+  { id: "common_ant", pest_name: "Common Ant", scientific_name: "Monomorium / Solenopsis spp." },
+  { id: "carpenter_ant", pest_name: "Carpenter Ant", scientific_name: "Camponotus spp." },
   { id: "wood_borer", pest_name: "Wood Borer", scientific_name: "Lyctus spp." },
   { id: "spider", pest_name: "Spider", scientific_name: "Araneae" },
+  { id: "housefly", pest_name: "Housefly", scientific_name: "Musca domestica" },
+  { id: "silverfish", pest_name: "Silverfish", scientific_name: "Lepisma saccharina" },
+  { id: "flea", pest_name: "Flea", scientific_name: "Ctenocephalides spp." },
+  { id: "bee_wasp", pest_name: "Honey Bee / Wasp", scientific_name: "Apis / Vespa spp." },
+  { id: "house_gecko", pest_name: "House Gecko", scientific_name: "Hemidactylus spp." },
+  { id: "stored_grain_weevil", pest_name: "Stored-Grain Weevil", scientific_name: "Sitophilus spp." },
+  { id: "snake", pest_name: "Snake", scientific_name: "Serpentes" },
 ];
 
 export function matchServiceForPest(pestName: string): PestServiceMapping | undefined {

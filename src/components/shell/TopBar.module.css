@@ -68,7 +68,11 @@
 }
 
 .mark {
-  font-size: 1.2rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: block;
+  box-shadow: 0 1px 3px rgba(12, 101, 54, 0.25);
 }
 
 .word {
