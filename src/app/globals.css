@@ -1,0 +1,142 @@
+:root {
+  /* ===== Pestiary light theme ===== */
+  --bg: #eef3ee;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --card-soft: #f1f6f1;
+
+  --border: rgba(20, 60, 40, 0.1);
+  --border-strong: rgba(20, 60, 40, 0.18);
+
+  --text: #15241b;
+  --text-muted: #51625a;
+  --text-faint: #93a39a;
+
+  --primary: #1f9d57;
+  --primary-strong: #15793f;
+  --primary-soft: #e4f4ea;
+
+  --teal: #0c9b86;
+  --teal-soft: #e1f4f0;
+
+  --accent: #b8801f; /* gold — confidence readouts */
+  --accent-soft: #fbf2dd;
+
+  --danger: #c0392b;
+
+  --gradient-text: linear-gradient(90deg, #1f9d57, #0c9b86);
+  --gradient-primary: linear-gradient(135deg, #27ae60, #0c9b86);
+  --gradient-hero: linear-gradient(135deg, #e4f4ea 0%, #e1f4f0 100%);
+  --gradient-card: linear-gradient(135deg, #ffffff 0%, #f6faf6 100%);
+  --gradient-winner: linear-gradient(135deg, #1f9d57, #b8801f);
+
+  /* Chart colors (legible on white) */
+  --chart-1: #1f9d57;
+  --chart-2: #0c9b86;
+  --chart-3: #b8801f;
+  --chart-4: #2f80c2;
+  --chart-5: #d98324;
+  --chart-6: #7b5ed6;
+
+  /* ===== Legacy aliases (kept so older class rules still resolve) ===== */
+  --bg-deep: var(--bg);
+  --bg-surface: var(--surface);
+  --bg-card: var(--card);
+  --bg-card-hover: var(--card-soft);
+  --accent-green: var(--primary);
+  --accent-cyan: var(--teal);
+  --accent-electric: var(--primary-strong);
+  --accent-amber: var(--accent);
+  --accent-magenta: var(--primary);
+  --accent-coral: var(--accent);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 5rem;
+
+  /* Border radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+
+  /* Shadows (soft, light theme) */
+  --shadow-card: 0 1px 2px rgba(20, 60, 40, 0.04), 0 6px 20px rgba(20, 60, 40, 0.07);
+  --shadow-pop: 0 10px 34px rgba(20, 60, 40, 0.14);
+  --shadow-winner: 0 1px 2px rgba(20, 60, 40, 0.05), 0 10px 30px rgba(31, 157, 87, 0.16);
+
+  /* App shell metrics */
+  --shell-max: 560px;
+  --topbar-h: 56px;
+  --bottomnav-h: 64px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 60, 40, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+::selection {
+  background: rgba(31, 157, 87, 0.18);
+  color: var(--text);
+}

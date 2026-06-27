@@ -1,0 +1,175 @@
+.wrapper {
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-winner);
+  overflow: hidden;
+}
+
+.glowBorder,
+.glowCorner,
+.glowCornerTL,
+.glowCornerBR {
+  display: none;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.pestBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pestName {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.sciName {
+  font-size: 0.9rem;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.confBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 2px solid rgba(184, 128, 31, 0.35);
+  flex-shrink: 0;
+}
+
+.confNum {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.confLabel {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.snippet {
+  position: relative;
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  margin-bottom: var(--space-md);
+  border-left: 3px solid var(--teal);
+  background: var(--teal-soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.quoteIcon {
+  font-size: 2rem;
+  color: var(--teal);
+  opacity: 0.5;
+  line-height: 1;
+  font-family: Georgia, serif;
+  flex-shrink: 0;
+}
+
+.snippetLabel {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.snippetText {
+  font-size: 0.95rem;
+  color: var(--text);
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.rationaleSection {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  background: var(--primary-soft);
+  margin-bottom: var(--space-lg);
+}
+
+.rationaleAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.rationaleContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rationaleLabel {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-strong);
+  font-weight: 700;
+}
+
+.rationaleNote {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--space-lg);
+  }
+  .pestName {
+    font-size: 1.35rem;
+  }
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

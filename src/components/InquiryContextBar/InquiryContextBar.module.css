@@ -1,0 +1,58 @@
+.bar {
+  width: 100%;
+}
+
+.inner {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+
+.label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary-strong);
+}
+
+.quote {
+  position: relative;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--text);
+  font-style: italic;
+  padding-left: var(--space-lg);
+}
+
+.quoteMark {
+  position: absolute;
+  left: -2px;
+  top: -6px;
+  font-size: 1.8rem;
+  color: var(--primary);
+  opacity: 0.45;
+  font-family: Georgia, serif;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.chip {
+  font-size: 0.76rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--card-soft);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
