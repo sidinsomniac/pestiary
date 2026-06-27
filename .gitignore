@@ -13,12 +13,12 @@
 .env.local
 .env.*.local
 
-# service account keys
+# service account keys (broad guard against committing downloaded key files)
 *.json
 !package.json
 !package-lock.json
 !tsconfig.json
-!public/data/mock_results.json
+!src/data/sample_inquiries.json
 
 # debug
 npm-debug.log*

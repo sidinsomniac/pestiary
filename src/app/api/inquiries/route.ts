@@ -32,9 +32,26 @@ export async function GET(): Promise<NextResponse> {
 
   // Surface the sheet error only when we actually fell back, so the operator
   // can see *why* live data isn't showing (missing env var, key, sharing, etc.).
+  // `diag` reports only booleans/lengths — never secret values — to debug deploys.
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY ?? "";
+  const diag =
+    source === "sample"
+      ? {
+          hasDeepSeekKey: !!process.env.DEEPSEEK_API_KEY,
+          hasServiceEmail: !!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+          hasPrivateKey: !!rawKey,
+          hasSheetId: !!process.env.GOOGLE_SHEETS_ID,
+          privateKeyLength: rawKey.length,
+          privateKeyHasBeginMarker: rawKey.includes("BEGIN PRIVATE KEY"),
+          privateKeyHasEscapedNewlines: rawKey.includes("\\n"),
+          privateKeyHasRealNewlines: rawKey.includes("\n"),
+        }
+      : undefined;
+
   return NextResponse.json({
     source,
     inquiries: list,
     ...(source === "sample" && sheetError ? { sheetError } : {}),
+    ...(diag ? { diag } : {}),
   });
 }
