@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import type { TriageResult } from "@/types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { CustomerInquiry, TriageResult } from "@/types";
 import TopBar from "@/components/shell/TopBar";
 import Drawer from "@/components/shell/Drawer";
 import BottomNav, { NAV_TABS } from "@/components/shell/BottomNav";
 import ScanLoader from "@/components/shell/ScanLoader";
-import SampleInquiryPicker from "@/components/SampleInquiryPicker/SampleInquiryPicker";
+import Inbox from "@/components/Inbox/Inbox";
 import InquiryContextBar from "@/components/InquiryContextBar/InquiryContextBar";
 import IdentifiedPestCard from "@/components/IdentifiedPestCard/IdentifiedPestCard";
 import AlsoConsidered from "@/components/AlsoConsidered/AlsoConsidered";
@@ -16,24 +16,90 @@ import ServicePanel from "@/components/ServicePanel/ServicePanel";
 import WhatsAppReplyCard from "@/components/WhatsAppReplyCard/WhatsAppReplyCard";
 import styles from "./TriageDashboard.module.css";
 
-interface TriageDashboardProps {
-  initialResult: TriageResult;
-}
+export default function TriageDashboard() {
+  const [inquiries, setInquiries] = useState<CustomerInquiry[]>([]);
+  const [source, setSource] = useState<"sheet" | "sample" | null>(null);
+  const [loadingInbox, setLoadingInbox] = useState(false);
+  const [inboxError, setInboxError] = useState<string | null>(null);
 
-export default function TriageDashboard({ initialResult }: TriageDashboardProps) {
-  const [result, setResult] = useState<TriageResult>(initialResult);
+  const [result, setResult] = useState<TriageResult | null>(null);
+  const [view, setView] = useState<"inbox" | "result">("inbox");
   const [scanning, setScanning] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [active, setActive] = useState<string>("diagnosis");
+  const [active, setActive] = useState("diagnosis");
   const [showAll, setShowAll] = useState(false);
+
+  const cacheRef = useRef<Map<string, TriageResult>>(new Map());
+  const [evaluatedIds, setEvaluatedIds] = useState<Set<string>>(new Set());
 
   const sectionsRef = useRef<Record<string, HTMLElement | null>>({});
   const setSectionRef = (id: string) => (el: HTMLElement | null) => {
     sectionsRef.current[id] = el;
   };
 
-  // Highlight the bottom-nav tab for whichever section is near the top.
+  const fetchInbox = useCallback(async () => {
+    setLoadingInbox(true);
+    setInboxError(null);
+    try {
+      const res = await fetch("/api/inquiries", { cache: "no-store" });
+      const data = await res.json();
+      setInquiries(data.inquiries ?? []);
+      setSource(data.source ?? null);
+      if (data.error) setInboxError(String(data.error));
+    } catch {
+      setInboxError("Could not load inquiries.");
+    } finally {
+      setLoadingInbox(false);
+    }
+  }, []);
+
   useEffect(() => {
+    fetchInbox();
+  }, [fetchInbox]);
+
+  const handleSelect = useCallback(async (inquiry: CustomerInquiry) => {
+    const cached = cacheRef.current.get(inquiry.id);
+    if (cached) {
+      setResult(cached);
+      setShowAll(false);
+      setActive("diagnosis");
+      setView("result");
+      return;
+    }
+    setScanning(true);
+    setInboxError(null);
+    try {
+      const res = await fetch("/api/triage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inquiry),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Triage failed (${res.status})`);
+      }
+      const triage: TriageResult = await res.json();
+      cacheRef.current.set(inquiry.id, triage);
+      setEvaluatedIds(new Set(cacheRef.current.keys()));
+      setResult(triage);
+      setShowAll(false);
+      setActive("diagnosis");
+      setView("result");
+    } catch (e) {
+      setInboxError(e instanceof Error ? e.message : "Triage failed.");
+    } finally {
+      setScanning(false);
+    }
+  }, []);
+
+  const scrollTo = (id: string) => {
+    setActive(id);
+    sectionsRef.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // Bottom-nav active highlighting (only relevant in the result view).
+  useEffect(() => {
+    if (view !== "result") return;
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -47,40 +113,41 @@ export default function TriageDashboard({ initialResult }: TriageDashboardProps)
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [view, result]);
 
-  const scrollTo = (id: string) => {
-    setActive(id);
-    sectionsRef.current[id]?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  if (view === "inbox") {
+    return (
+      <div className={styles.shell}>
+        <TopBar onMenu={() => setDrawerOpen(true)} />
+        <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+          <p className={styles.about}>
+            Pestiary is the Apex triage console. Pick a customer inquiry from the inbox to identify
+            the most likely pest, see the supporting evidence, get a recommended treatment with an
+            estimated quote, and a reply you can send straight back.
+          </p>
+        </Drawer>
+        <Inbox
+          inquiries={inquiries}
+          source={source}
+          loading={loadingInbox}
+          error={inboxError}
+          evaluatedIds={evaluatedIds}
+          onRefresh={fetchInbox}
+          onSelect={handleSelect}
+        />
+        <ScanLoader visible={scanning} />
+      </div>
+    );
+  }
 
-  const { inquiry, identified_pest, candidate_pests, recommended_service, whatsapp_reply } = result;
+  // Result view
+  const r = result!;
   const winnerEval =
-    candidate_pests.find((c) => c.id === identified_pest.id) ?? candidate_pests[0];
+    r.candidate_pests.find((c) => c.id === r.identified_pest.id) ?? r.candidate_pests[0];
 
   return (
     <div className={styles.shell}>
-      <TopBar onMenu={() => setDrawerOpen(true)} />
-
-      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <SampleInquiryPicker
-          onStart={() => {
-            setScanning(true);
-            setDrawerOpen(false);
-          }}
-          onResult={(r) => {
-            setResult(r);
-            setShowAll(false);
-            scrollTo("diagnosis");
-          }}
-          onSettle={() => setScanning(false)}
-        />
-        <p className={styles.about}>
-          Pestiary identifies household pests from a plain-language description, explains the
-          evidence behind the call, recommends a treatment with an estimated quote, and drafts a
-          reply you can send straight to the customer.
-        </p>
-      </Drawer>
+      <TopBar onBack={() => setView("inbox")} subtitle={r.inquiry.customer_name} />
 
       <main className={styles.content}>
         <section id="diagnosis" ref={setSectionRef("diagnosis")} className={styles.section}>
@@ -88,9 +155,9 @@ export default function TriageDashboard({ initialResult }: TriageDashboardProps)
             <span className={styles.eyebrow}>Diagnosis</span>
             <h2 className={styles.secTitle}>Most likely pest</h2>
           </header>
-          <InquiryContextBar inquiry={inquiry} />
-          <IdentifiedPestCard pest={identified_pest} pestEval={winnerEval} />
-          <AlsoConsidered candidates={candidate_pests} onSelect={() => scrollTo("evidence")} />
+          <InquiryContextBar inquiry={r.inquiry} />
+          <IdentifiedPestCard pest={r.identified_pest} pestEval={winnerEval} />
+          <AlsoConsidered candidates={r.candidate_pests} onSelect={() => scrollTo("evidence")} />
         </section>
 
         <section id="evidence" ref={setSectionRef("evidence")} className={styles.section}>
@@ -98,16 +165,16 @@ export default function TriageDashboard({ initialResult }: TriageDashboardProps)
             <span className={styles.eyebrow}>Evidence</span>
             <h2 className={styles.secTitle}>Why this match</h2>
           </header>
-          <RadarChartSection candidates={candidate_pests} />
+          <RadarChartSection candidates={r.candidate_pests} />
           <button
             className={styles.toggle}
             onClick={() => setShowAll((s) => !s)}
             type="button"
             aria-expanded={showAll}
           >
-            {showAll ? "Hide full breakdown" : `Show all ${candidate_pests.length} candidates`}
+            {showAll ? "Hide full breakdown" : `Show all ${r.candidate_pests.length} candidates`}
           </button>
-          {showAll && <Leaderboard candidates={candidate_pests} />}
+          {showAll && <Leaderboard candidates={r.candidate_pests} />}
         </section>
 
         <section id="service" ref={setSectionRef("service")} className={styles.section}>
@@ -115,7 +182,7 @@ export default function TriageDashboard({ initialResult }: TriageDashboardProps)
             <span className={styles.eyebrow}>Recommendation</span>
             <h2 className={styles.secTitle}>Suggested treatment</h2>
           </header>
-          <ServicePanel service={recommended_service} />
+          <ServicePanel service={r.recommended_service} />
         </section>
 
         <section id="reply" ref={setSectionRef("reply")} className={styles.section}>
@@ -123,7 +190,7 @@ export default function TriageDashboard({ initialResult }: TriageDashboardProps)
             <span className={styles.eyebrow}>Reply</span>
             <h2 className={styles.secTitle}>Message for the customer</h2>
           </header>
-          <WhatsAppReplyCard reply={whatsapp_reply} />
+          <WhatsAppReplyCard reply={r.whatsapp_reply} />
         </section>
       </main>
 

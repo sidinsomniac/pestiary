@@ -1,28 +1,15 @@
 import { NextResponse } from "next/server";
-import { writeFileSync } from "fs";
-import path from "path";
 import { loadLatestInquiry } from "@/lib/inquiries";
 import { evaluateInquiry } from "@/lib/evaluate";
 
+// Convenience endpoint: evaluate the most recent Sheet submission and return
+// the full result. (No filesystem write — the operator console drives triage
+// per-inquiry via /api/triage.)
 export async function POST(): Promise<NextResponse> {
   try {
-    // Demo flow: read the most recent inquiry from the linked Google Sheet.
     const inquiry = await loadLatestInquiry();
     const result = await evaluateInquiry(inquiry);
-
-    const outputPath = path.join(
-      process.cwd(),
-      "public",
-      "data",
-      "triage_result.json"
-    );
-    writeFileSync(outputPath, JSON.stringify(result, null, 2));
-
-    return NextResponse.json({
-      success: true,
-      identified_pest: result.identified_pest.pest_name,
-      confidence_pct: result.identified_pest.confidence_pct,
-    });
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Triage pipeline failed:", error);
     return NextResponse.json(

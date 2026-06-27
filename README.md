@@ -6,32 +6,32 @@ Built as a demo for **Apex Pest Solutions** (a pest-control brand, Bangalore). D
 
 ## How it works
 
-**It evaluates ONE inquiry and ranks the PESTS** (it does not rank submissions):
+Pestiary is an **operator console** for Apex staff: open it, see the inbox of customer form submissions, pick one, and get the AI triage. It evaluates one inquiry at a time and **ranks the candidate pests** (it does not rank submissions):
 
-- `POST /api/evaluate` reads the **latest row** of the linked Google Sheet (the most recent form submission) → one `CustomerInquiry`.
-- That inquiry goes to **DeepSeek** (OpenAI-compatible API via LangChain's `ChatOpenAI`), which scores all 10 candidate pests across `symptom_match`, `behavioral_cues`, `visual_cues`, `environmental_fit`, `timing_pattern`, and `damage_signature`.
-- Scores are totalled and sorted; **#1 is the diagnosis**. It's mapped to an Apex service + price estimate, and a reply is drafted in the customer's language.
-- The result is written to `public/data/triage_result.json`.
+- `GET /api/inquiries` lists customer submissions from the linked Google Sheet (newest first). If no Sheet is configured, it falls back to the bundled `public/data/sample_inquiries.json` so the demo always works.
+- Selecting an inquiry `POST`s it to `/api/triage`, which sends it to **DeepSeek** (OpenAI-compatible API via LangChain's `ChatOpenAI`). The model scores all 10 candidate pests across `symptom_match`, `behavioral_cues`, `visual_cues`, `environmental_fit`, `timing_pattern`, and `damage_signature`.
+- Scores are totalled and sorted; **#1 is the diagnosis**, mapped to an Apex service + price estimate, with a reply drafted in the customer's language. The full `TriageResult` is returned to the client (no filesystem write — fully serverless-safe). Results are cached per session so re-opening an inquiry is instant.
 
 DeepSeek's JSON-schema response format isn't currently available, so the pipeline uses a prompt-engineered, zod-validated JSON path (with a structured-output attempt first for forward-compatibility).
 
 ## The app (mobile-first)
 
 A phone-style app shell:
-- **Top bar** with a hamburger menu (drawer holds the sample-inquiry picker + about).
-- **Bottom tab bar** — Diagnosis · Evidence · Service · Reply — scroll-navigates the page and highlights the active section.
-- **Diagnosis** — the customer's words, the identified pest (confidence ring, scientific name, evidence quote, rationale, six metric badges), and an "also considered" row.
-- **Evidence** — a comparative radar of the top candidates, with a toggle to expand the full 10-pest breakdown.
-- **Service** — recommended treatment, INR quote, visits, warranty.
-- **Reply** — the bilingual message with a Copy button.
+- **Inbox** (landing) — the queue of customer inquiries with a Refresh button; a "Live from Google Sheet" / sample-fallback indicator and a "✓ triaged" badge on ones already evaluated.
+- Selecting an inquiry plays an **"identifying…" bug-scan animation**, then opens the result view:
+  - **Top bar** with a back arrow to the inbox; **bottom tab bar** (Diagnosis · Evidence · Service · Reply) scroll-navigates and highlights the active section.
+  - **Diagnosis** — the customer's words, the identified pest (confidence ring, scientific name, evidence quote, rationale, six metric badges), and an "also considered" row.
+  - **Evidence** — a comparative radar of the top candidates, with a toggle to expand the full 10-pest breakdown.
+  - **Service** — recommended treatment, INR quote, visits, warranty.
+  - **Reply** — the bilingual message with a Copy button.
 
-Running a new triage plays an "identifying…" bug-scan animation until the result resolves. Light green theme; Space Grotesk + Inter.
+Light green theme; Space Grotesk + Inter.
 
-## Triggering a triage (three ways)
+## Triggering a triage
 
-1. **Google Form submission** — `POST /api/evaluate` reads the latest Sheet row, runs the pipeline, writes `triage_result.json`.
-2. **Manual API** — `POST /api/triage` with a `CustomerInquiry` body returns a full `TriageResult` (no Sheet write).
-3. **Sample picker** — the in-app drawer offers five sample inquiries (`public/data/sample_inquiries.json`); selecting one re-runs the live pipeline.
+1. **Operator console (primary)** — open the app, pick an inquiry from the inbox; it runs the live pipeline and shows the result.
+2. **Manual API** — `POST /api/triage` with a `CustomerInquiry` body returns a full `TriageResult`.
+3. **Evaluate latest** — `POST /api/evaluate` triages the most recent Sheet submission and returns the result.
 
 ```bash
 curl -X POST http://localhost:3000/api/triage \

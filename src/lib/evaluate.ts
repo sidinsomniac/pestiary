@@ -66,7 +66,7 @@ Generate a polite, professional WhatsApp message in the customer's preferred lan
 2. Confirms the likely pest identified ({pest_name}).
 3. Recommends the service ({service_name}) with a 1-line reason.
 4. Quotes the estimated price range (Rs {price_min} - Rs {price_max}).
-5. Invites them to schedule a visit, providing both phone numbers: +91 80 4567 8900 and +91 98860 12345.
+5. Invites them to schedule a visit, providing both phone numbers: +91 80 4567 2828 and +91 89818 12345.
 6. Signs off with: "— Apex Pest Solutions Team".
 
 Keep it under 6 lines. Use formal Bengali/Hindi script appropriately. Avoid overly technical language.
