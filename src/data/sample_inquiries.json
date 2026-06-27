@@ -1,0 +1,57 @@
+[
+  {
+    "id": "test_01",
+    "customer_name": "Suresh Gowda",
+    "contact_number": "+919886012345",
+    "description": "Madam, in my Koramangala flat there are many small brown insects in the kitchen at night. The moment I switch on the light they scatter and hide behind the gas stove and under the sink. They are about 1 cm long.",
+    "property_type": "Home",
+    "square_footage": 1200,
+    "location_in_property": "Kitchen",
+    "language": "English",
+    "submitted_at": "2026-06-26T18:00:00Z"
+  },
+  {
+    "id": "test_02",
+    "customer_name": "Sutapa Banerjee",
+    "contact_number": "+919830654321",
+    "description": "ইন্দিরানগরে আমার বাসায় কাঠের আসবাবপত্রে অনেক ছোট ছোট গর্ত দেখা যাচ্ছে। নিচে কাঠের গুঁড়ো পড়ছে। পুরোনো আলমারি আর খাটে এটা সবচেয়ে বেশি দেখা যাচ্ছে।",
+    "property_type": "Home",
+    "square_footage": 900,
+    "location_in_property": "Bedroom",
+    "language": "Bengali",
+    "submitted_at": "2026-06-26T18:30:00Z"
+  },
+  {
+    "id": "test_03",
+    "customer_name": "Naveen Shetty",
+    "contact_number": "+919845077888",
+    "description": "We run a restaurant near Brigade Road. In the evenings we have a serious mosquito problem and guests are complaining. We also keep seeing flies around our outdoor seating area. We need an urgent solution.",
+    "property_type": "Restaurant",
+    "square_footage": 2500,
+    "location_in_property": "Whole premises including outdoor seating",
+    "language": "English",
+    "submitted_at": "2026-06-26T19:00:00Z"
+  },
+  {
+    "id": "test_04",
+    "customer_name": "Manjunath Rao",
+    "contact_number": "+919886234567",
+    "description": "व्हाइटफील्ड में हमारे घर में रात को छत के अंदर कुछ चलने की आवाज आती है। सुबह उठकर देखा तो किचन में अनाज की बोरियों पर छेद हैं और कुछ काली गंदगी पड़ी है।",
+    "property_type": "Home",
+    "square_footage": 1500,
+    "location_in_property": "Kitchen and ceiling",
+    "language": "Hindi",
+    "submitted_at": "2026-06-26T19:30:00Z"
+  },
+  {
+    "id": "test_05",
+    "customer_name": "Priyanka Dasgupta",
+    "contact_number": "+919900099111",
+    "description": "I stay in HSR Layout. Every morning I get bites on my arms and legs, in rows of three. I cannot see any insect, but there are tiny brown stains on the bedsheet near the corners of the mattress.",
+    "property_type": "Home",
+    "square_footage": 650,
+    "location_in_property": "Bedroom",
+    "language": "English",
+    "submitted_at": "2026-06-26T20:00:00Z"
+  }
+]
