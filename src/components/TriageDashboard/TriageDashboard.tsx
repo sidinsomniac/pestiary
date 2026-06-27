@@ -46,6 +46,8 @@ export default function TriageDashboard() {
       setInquiries(data.inquiries ?? []);
       setSource(data.source ?? null);
       if (data.error) setInboxError(String(data.error));
+      else if (data.sheetError)
+        setInboxError(`Live Sheet unavailable — showing samples. (${data.sheetError})`);
     } catch {
       setInboxError("Could not load inquiries.");
     } finally {

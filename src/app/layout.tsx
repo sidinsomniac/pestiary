@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SwRegistrar from "@/components/shell/SwRegistrar";
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   description:
     "Pestiary identifies household pests from a plain-language description, explains the evidence, recommends a treatment with an estimated quote, and drafts a ready-to-send bilingual reply.",
   manifest: "/manifest.webmanifest",
-  themeColor: "#1f9d57",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -32,6 +31,12 @@ export const metadata: Metadata = {
       "Describe a pest problem and let Pestiary identify it, explain why, and recommend a fix.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1f9d57",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
